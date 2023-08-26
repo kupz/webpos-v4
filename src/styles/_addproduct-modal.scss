@@ -1,0 +1,28 @@
+.addproduct-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  overflow: hidden;
+
+  background-color: rgba($color: #000000, $alpha: 0.7);
+}
+
+.addproduct-modal-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 10px;
+
+  background-color: white;
+  box-shadow: 0 0 10px black;
+
+  padding: 2rem;
+}

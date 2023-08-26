@@ -1,0 +1,26 @@
+.navbar {
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+//   border: 1px solid black;
+  max-width: 1500px;
+  width: 100%;
+}
+.img-logo {
+  width: 70px;
+  cursor: pointer;
+}
+.nav-item-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: black;
+  font-size: large;
+  font-weight: 600;
+}

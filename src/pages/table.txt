@@ -1,0 +1,113 @@
+<div className="table-container">
+        <table
+          className="history-table"
+          style={{ color: "white", fontWeight: "600" }}
+          // style={{ backgroundColor: "rgba(255, 255, 255, 0.8)" }}
+        >
+          <thead>
+            <tr
+              style={{
+                backgroundColor: "whitesmoke",
+                borderBottom: "10px solid #84db65",
+                color: "black",
+              }}
+            >
+              <th>Transaction#</th>
+              <th>Transaction</th>
+              <th>Total Quantity</th>
+              <th>Total Price</th>
+              <th>Date & Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* data here */}
+            {transactionData.map((item) => {
+              return (
+                <tr
+                  key={item.id}
+                  style={{
+                    borderBottom: "10px solid #84db65",
+                    borderRadius: "15px",
+                  }}
+                >
+                  <td>{item.id}</td>
+                  <td>
+                    {item.type === 1
+                      ? "Invoice"
+                      : item.type === 2
+                      ? "Receive"
+                      : item.type === 3
+                      ? "Pullout"
+                      : "not found"}
+                  </td>
+                  <td>{item.total_quantity}</td>
+                  <td>{item.total_price}</td>
+                  <td>
+                    {dayjs(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
+                  </td>
+                  <td>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => {
+                          setActivatePrint(
+                            <PrintReceipt
+                              data={item}
+                              redirectTo={"dashboard/history"}
+                            />
+                          );
+                        }}
+                      >
+                        view
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => {
+                          // console.log("item", item);
+                          // console.log("inventory", inventoryData);
+                          if (validate_void(item, inventoryData)) {
+                            voidTransaction(cookies.accessToken, item.id).then(
+                              (res) => {
+                                if (res.ok) {
+                                  toast.success(res.message);
+                                  const tempTrans = transactionData.map(
+                                    (obj) => {
+                                      if (obj.id === res.data.id) {
+                                        return res.data;
+                                      } else {
+                                        return obj;
+                                      }
+                                    }
+                                  );
+                                  setTransactionData(tempTrans);
+                                } else {
+                                  toast.error("something went wrong");
+                                }
+                              }
+                            );
+                          } else {
+                            toast.error(
+                              "There's a conflict on your data , you can't use void function when your product is already been consumed!"
+                            );
+                          }
+                        }}
+                      >
+                        {item.void ? "unvoid" : "void"}
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
